@@ -10,11 +10,11 @@ public class Globo {
     private Image image;
     private double posX, posY, velX, velY, width, height;
     private int dirX, dirY;
-    private double globoID;
+    private final String color;
 
-    public Globo(Image image) {
-        this.posX = Math.random()*1100;
-        this.globoID = Math.random()*10000;
+    public Globo(Image image, String color) {
+        this.posX = Math.random()*1300;
+        this.color = color;
         this.posY = 750;
         this.velX = 1.0f;
         this.velY = 1.0f;
@@ -30,25 +30,10 @@ public class Globo {
      */
     public void move() {
         this.posY--;
-        /*if(dirX == 1) {
-            posX += velX;
-            if(posX>=1200-width) dirX = (-1)*dirX;
-        }else {
-            posX -= velX;
-            if(posX<=0) dirX = (-1)*dirX;
-        }
-        if(dirY == 1){
-            posY += velY;
-            if(posY>=800-height) dirY = (-1)*dirY;
-        }
-        else {
-            posY -= velY;
-            if(posY<=0) dirY = (-1)*dirY;
-        }*/
     }
 
-    public double getGloboID() {
-        return globoID;
+    public String getColor() {
+        return color;
     }
 
     public void render(GraphicsContext gc) {

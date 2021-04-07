@@ -28,8 +28,14 @@ public class MainWindow implements Initializable {
     private int contadorGlobosReventados;
     private Random random = new Random();
     private int numRandom;
-    private double FPS = 0.006;
+    private double FPS = 0.005;
     private int nivel = 1;
+    private int contadorAmarillos, contadorMorados, contadorRojos, contadorVerdes;
+
+    private String stringGlobosRojos = "Revienta los globos rojos";
+    private String stringGlobosAmarillos = "Revienta los globos amarillos";
+    private String tringGlobosVerdes = "Revienta los globos verdes";
+    private String stringGlobosMorados = "Revienta los globos morados";
 
     ArrayList<Globo> globos = new ArrayList<>();
 
@@ -47,57 +53,29 @@ public class MainWindow implements Initializable {
             if (Math.random() < cuantos)  {
 
                 if (numRandom == 1) {
-                    Globo globo = new Globo(new Image("images/globo.png", 100, 100, false, false));
+                    Globo globo = new Globo(new Image("images/globo.png", 100, 100, false, false), "morado");
                     globos.add(globo);
                 } else if (numRandom == 2){
-                    Globo globo = new Globo(new Image("images/globo2.png", 100, 100, false, false));
+                    Globo globo = new Globo(new Image("images/globo2.png", 100, 100, false, false), "amarillo");
                     globos.add(globo);
                 } else if (numRandom == 3){
-                    Globo globo = new Globo(new Image("images/globo2.png", 100, 100, false, false));
+                    Globo globo = new Globo(new Image("images/globo3.png", 100, 100, false, false), "verde");
                     globos.add(globo);
                 } else {
-                    Globo globo = new Globo(new Image("images/globo4.png", 100, 100, false, false));
+                    Globo globo = new Globo(new Image("images/globo4.png", 100, 100, false, false), "rojo");
                     globos.add(globo);
                 }
 
             }
 
-            gc.drawImage(fons, 0,0,1200,800);;
+            gc.drawImage(fons, 0,0,1400,800);
             for (int i = 0; i < globos.size(); i++) {
                 globos.get(i).move();
                 globos.get(i).render(gc);
             }
 
-            gc.setFill(Color.BLUE);
-            gc.setFont(new Font("Arial", 50));
-            gc.fillText(String.valueOf(contadorGlobosReventados), 1120, 80);
-
-            gc.setFill(Color.BLUE);
-            gc.setFont(new Font("Arial", 50));
-            gc.fillText("Nivel: " + nivel, 60, 80);
-
-            if (contadorGlobosReventados == 10) {
-                cuantos = 0.008;
-                nivel = 2;
-            } else if (contadorGlobosReventados == 20) {
-                cuantos = 0.0010;
-                nivel = 3;
-            } else if (contadorGlobosReventados == 30) {
-                cuantos = 0.012;
-                nivel = 4;
-            } else if (contadorGlobosReventados == 40) {
-                cuantos = 0.014;
-                nivel = 5;
-            } else if (contadorGlobosReventados == 50) {
-                cuantos = 0.016;
-                nivel = 6;
-            } else if (contadorGlobosReventados == 60) {
-                cuantos = 0.016;
-                nivel = 7;
-            } else if (contadorGlobosReventados == 70) {
-                cuantos = 0.016;
-                nivel = 8;
-            }
+            prints();
+            contadores();
 
         }
     })
@@ -131,18 +109,91 @@ public class MainWindow implements Initializable {
         scene.setOnMouseClicked(mouseEvent -> {
             Point2D point = new Point2D(mouseEvent.getX(),mouseEvent.getY());
 
-
             for (int i = 0; i < globos.size() ; i++) {
+
+                if (globos.get(i).isClicked(point)) {
+
+                }
+
                 if(globos.get(i).isClicked(point)) {
                     contadorGlobosReventados++;
-
                     // Cambiar imagen del globo por una explsion
                     globos.get(i).setImage(new Image("images/explosion.png", 100, 100, false, false));
 
+                    System.out.println(cuantos);
+
+                    switch (globos.get(i).getColor()) {
+                        case "morado" -> contadorMorados++;
+                        case "amarillo" -> contadorAmarillos++;
+                        case "rojo" -> contadorRojos++;
+                        case "verde" -> contadorVerdes++;
+                    }
                 }
             }
             globos.removeIf(globo -> globo.isClicked(point));
         });
+    }
+
+    private void contadores() {
+        if (contadorGlobosReventados == 10) {
+            cuantos = 0.010;
+            nivel = 2;
+        } else if (contadorGlobosReventados == 20) {
+            cuantos = 0.020;
+            nivel = 3;
+        } else if (contadorGlobosReventados == 30) {
+            cuantos = 0.030;
+            nivel = 4;
+        } else if (contadorGlobosReventados == 40) {
+            cuantos = 0.040;
+            nivel = 5;
+        } else if (contadorGlobosReventados == 50) {
+            cuantos = 0.050;
+            nivel = 6;
+        } else if (contadorGlobosReventados == 60) {
+            cuantos = 0.060;
+            nivel = 7;
+        } else if (contadorGlobosReventados == 70) {
+            cuantos = 0.070;
+            nivel = 8;
+        }
+    }
+
+    private void prints() {
+        //Morado
+        gc.setFill(Color.PURPLE);
+        gc.setFont(new Font("Arial", 50));
+        gc.fillText(String.valueOf(contadorMorados), 1120, 80);
+
+        //Amarillo
+        gc.setFill(Color.YELLOW);
+        gc.setFont(new Font("Arial", 50));
+        gc.fillText(String.valueOf(contadorAmarillos), 1120, 130);
+
+        //Rojo
+        gc.setFill(Color.RED);
+        gc.setFont(new Font("Arial", 50));
+        gc.fillText(String.valueOf(contadorRojos), 1120, 180);
+
+        //Verde
+        gc.setFill(Color.GREEN);
+        gc.setFont(new Font("Arial", 50));
+        gc.fillText(String.valueOf(contadorVerdes), 1120, 230);
+
+        gc.setFill(Color.WHITE);
+        gc.setFont(new Font("Arial", 50));
+        gc.fillText(String.valueOf(contadorGlobosReventados), 1120, 280);
+
+        gc.setFill(Color.BLUE);
+        gc.setFont(new Font("Arial", 50));
+        gc.fillText("Nivel: " + nivel, 60, 80);
+
+    }
+
+    private void botones() {
+
+
+
     }
 
 
