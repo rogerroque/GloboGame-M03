@@ -18,7 +18,10 @@ import javafx.util.Duration;
 import sprites.Globo;
 
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.ResourceBundle;
 
 public class MainWindow implements Initializable {
     private Scene scene;
@@ -31,23 +34,34 @@ public class MainWindow implements Initializable {
     private double FPS = 0.005;
     private int nivel = 1;
     private int contadorAmarillos, contadorMorados, contadorRojos, contadorVerdes;
+    private String colorAReventar;
+    int numeroRandonXD;
+    private boolean alreadyExecuted1 = false;
+    private boolean alreadyExecuted2 = false;
+    private boolean alreadyExecuted3 = false;
+    private boolean alreadyExecuted4 = false;
+    private boolean alreadyExecuted5 = false;
+    private boolean alreadyExecuted6 = false;
+    private boolean alreadyExecuted7 = false;
+    private boolean alreadyExecuted8 = false;
+    boolean ff;
 
-    private String stringGlobosRojos = "Revienta los globos rojos";
-    private String stringGlobosAmarillos = "Revienta los globos amarillos";
-    private String tringGlobosVerdes = "Revienta los globos verdes";
-    private String stringGlobosMorados = "Revienta los globos morados";
+    List<String> colorDeGloboActual = new ArrayList<>();
+    String rojo = "rojo"; String verde = "verde"; String morado = "morado"; String amarillo = "amarillo";
+    List<String> tipoDeGlobo = new ArrayList<>();
+    private String stringGlobosRojos = "rojo";
+    private String stringGlobosAmarillos = "amarillo";
+    private String stringGlobosVerdes = "verde";
+    private String stringGlobosMorados = "morado";
 
     ArrayList<Globo> globos = new ArrayList<>();
 
-    /**
-     * Opció 2: TimeLine
-     * Controlem la velocitat de refresc amb KeyFrame.
-     * Aquesta opció és molt més flexible que l'AnimationTimer
-     */
-    /*Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.0057), new EventHandler<>() {*/
     Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(FPS), new EventHandler<>() {
         @Override
         public void handle(ActionEvent event) {
+
+            tipoDeGlobo.add(stringGlobosAmarillos); tipoDeGlobo.add(stringGlobosMorados); tipoDeGlobo.add(stringGlobosRojos); tipoDeGlobo.add(stringGlobosVerdes);
+            colorDeGloboActual.add(amarillo); colorDeGloboActual.add(morado); colorDeGloboActual.add(rojo); colorDeGloboActual.add(verde);
 
             numRandom = random.nextInt(4) + 1;
             if (Math.random() < cuantos)  {
@@ -65,7 +79,6 @@ public class MainWindow implements Initializable {
                     Globo globo = new Globo(new Image("images/globo4.png", 100, 100, false, false), "rojo");
                     globos.add(globo);
                 }
-
             }
 
             gc.drawImage(fons, 0,0,1400,800);
@@ -74,8 +87,8 @@ public class MainWindow implements Initializable {
                 globos.get(i).render(gc);
             }
 
-            prints();
             contadores();
+            prints();
 
         }
     })
@@ -106,6 +119,7 @@ public class MainWindow implements Initializable {
 
     public void setScene(Scene sc) {
         scene = sc;
+
         scene.setOnMouseClicked(mouseEvent -> {
             Point2D point = new Point2D(mouseEvent.getX(),mouseEvent.getY());
 
@@ -113,20 +127,29 @@ public class MainWindow implements Initializable {
 
                 if (globos.get(i).isClicked(point)) {
 
-                }
+                    /*if(!ff) {
+                        numeroRandonXD = random.nextInt(4) + 1;
+                        colorAReventar = tipoDeGlobo.get(numeroRandonXD);
 
-                if(globos.get(i).isClicked(point)) {
-                    contadorGlobosReventados++;
-                    // Cambiar imagen del globo por una explsion
-                    globos.get(i).setImage(new Image("images/explosion.png", 100, 100, false, false));
+                        ff = true;
+                    }*/
 
-                    System.out.println(cuantos);
-
-                    switch (globos.get(i).getColor()) {
-                        case "morado" -> contadorMorados++;
-                        case "amarillo" -> contadorAmarillos++;
-                        case "rojo" -> contadorRojos++;
-                        case "verde" -> contadorVerdes++;
+                    if (!globos.get(i).getColor().equals(colorAReventar)) {
+                        System.out.print("Has perdido");
+                    } else {
+                        if (colorAReventar.equals("morado")) {
+                            contadorMorados++;
+                            contadorGlobosReventados++;
+                        } else if (colorAReventar.equals("verde")) {
+                            contadorVerdes++;
+                            contadorGlobosReventados++;
+                        } else if (colorAReventar.equals("rojo")) {
+                            contadorRojos++;
+                            contadorGlobosReventados++;
+                        } else if (colorAReventar.equals("amarillo")) {
+                            contadorAmarillos++;
+                            contadorGlobosReventados++;
+                        }
                     }
                 }
             }
@@ -135,27 +158,96 @@ public class MainWindow implements Initializable {
     }
 
     private void contadores() {
-        if (contadorGlobosReventados == 10) {
+
+        if (contadorGlobosReventados == 0) {
+            cuantos = 0.005;
+            nivel = 1;
+
+            if (!alreadyExecuted1) {
+                numeroRandonXD = random.nextInt(4) + 1;
+                colorAReventar = tipoDeGlobo.get(numeroRandonXD);
+
+                alreadyExecuted1 = true;
+            }
+
+        } else if (contadorGlobosReventados == 10) {
             cuantos = 0.010;
             nivel = 2;
+
+            if (!alreadyExecuted2) {
+                numeroRandonXD = random.nextInt(4) + 1;
+                colorAReventar = tipoDeGlobo.get(numeroRandonXD);
+                System.out.println("AAAAAAAAAAAAAAAA");
+
+                alreadyExecuted2 = true;
+            }
+
         } else if (contadorGlobosReventados == 20) {
             cuantos = 0.020;
             nivel = 3;
+
+            if (!alreadyExecuted3) {
+                numeroRandonXD = random.nextInt(4) + 1;
+                colorAReventar = tipoDeGlobo.get(numeroRandonXD);
+
+                alreadyExecuted3 = true;
+            }
+
         } else if (contadorGlobosReventados == 30) {
             cuantos = 0.030;
             nivel = 4;
+
+            if (!alreadyExecuted4) {
+                numeroRandonXD = random.nextInt(4) + 1;
+                colorAReventar = tipoDeGlobo.get(numeroRandonXD);
+
+                alreadyExecuted4 = true;
+            }
+
         } else if (contadorGlobosReventados == 40) {
             cuantos = 0.040;
             nivel = 5;
+
+            if (!alreadyExecuted5) {
+                numeroRandonXD = random.nextInt(4) + 1;
+                colorAReventar = tipoDeGlobo.get(numeroRandonXD);
+
+                alreadyExecuted5 = true;
+            }
+
         } else if (contadorGlobosReventados == 50) {
             cuantos = 0.050;
             nivel = 6;
+
+            if (!alreadyExecuted6) {
+                numeroRandonXD = random.nextInt(4) + 1;
+                colorAReventar = tipoDeGlobo.get(numeroRandonXD);
+
+                alreadyExecuted6 = true;
+            }
+
         } else if (contadorGlobosReventados == 60) {
             cuantos = 0.060;
             nivel = 7;
+
+            if (!alreadyExecuted7) {
+                numeroRandonXD = random.nextInt(4) + 1;
+                colorAReventar = tipoDeGlobo.get(numeroRandonXD);
+
+                alreadyExecuted7 = true;
+            }
+
         } else if (contadorGlobosReventados == 70) {
             cuantos = 0.070;
             nivel = 8;
+
+            if (!alreadyExecuted8) {
+                numeroRandonXD = random.nextInt(4) + 1;
+                colorAReventar = tipoDeGlobo.get(numeroRandonXD);
+
+                alreadyExecuted8 = true;
+            }
+
         }
     }
 
@@ -163,38 +255,34 @@ public class MainWindow implements Initializable {
         //Morado
         gc.setFill(Color.PURPLE);
         gc.setFont(new Font("Arial", 50));
-        gc.fillText(String.valueOf(contadorMorados), 1120, 80);
+        gc.fillText(String.valueOf(contadorMorados), 1320, 80);
 
         //Amarillo
         gc.setFill(Color.YELLOW);
         gc.setFont(new Font("Arial", 50));
-        gc.fillText(String.valueOf(contadorAmarillos), 1120, 130);
+        gc.fillText(String.valueOf(contadorAmarillos), 1320, 130);
 
         //Rojo
         gc.setFill(Color.RED);
         gc.setFont(new Font("Arial", 50));
-        gc.fillText(String.valueOf(contadorRojos), 1120, 180);
+        gc.fillText(String.valueOf(contadorRojos), 1320, 180);
 
         //Verde
         gc.setFill(Color.GREEN);
         gc.setFont(new Font("Arial", 50));
-        gc.fillText(String.valueOf(contadorVerdes), 1120, 230);
-
+        gc.fillText(String.valueOf(contadorVerdes), 1320, 230);
         gc.setFill(Color.WHITE);
         gc.setFont(new Font("Arial", 50));
-        gc.fillText(String.valueOf(contadorGlobosReventados), 1120, 280);
+        gc.fillText(String.valueOf(contadorGlobosReventados), 1320, 280);
 
         gc.setFill(Color.BLUE);
         gc.setFont(new Font("Arial", 50));
         gc.fillText("Nivel: " + nivel, 60, 80);
 
-    }
-
-    private void botones() {
-
-
+        gc.setFill(Color.ORANGE);
+        gc.setFont(new Font("Arial", 50));
+        gc.fillText(colorAReventar, 400, 80);
 
     }
-
 
 }

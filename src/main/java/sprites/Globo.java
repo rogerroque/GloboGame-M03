@@ -23,11 +23,6 @@ public class Globo {
         setImage(image);
     }
 
-    /**
-     * El moviment de la pilota és gestionat per la mateixa pilota
-     * En aquest exemple només cal generalitzar les mides per on es
-     * pot moure. En aquest cas en una finestra de 1200x800
-     */
     public void move() {
         this.posY--;
     }
@@ -71,35 +66,5 @@ public class Globo {
         if(getBoundary().contains(p)) return true;
         else return false;
     }
-
-    public void changeDir() {
-        double t = Math.random();
-        if(0.33 > t) dirX = dirX*(-1);
-        if(0.33 < t && 0.66 > t) dirY = dirY*(-1);
-        if(0.66 < t) {
-            dirY = dirY*(-1);
-            dirX = dirX*(-1);
-        }
-
-    }
-
-    public void setDirection(String direction) {
-        switch (direction) {
-            case "RIGHT":
-                dirX = 1;
-                break;
-            case "LEFT":
-                dirX = -1;
-                break;
-            case "DOWN":
-                dirY = 1;
-                break;
-            case "UP":
-                dirY = -1;
-                break;
-        }
-    }
-
-
 
 }
